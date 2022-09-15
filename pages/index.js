@@ -4,6 +4,8 @@ import ImageDisplay from '../components/ImageDisplay';
 export default function Home() {
 
     const [image, setImage] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
+
 
     useEffect (() => {
         document.addEventListener('paste', (e) => {
@@ -11,23 +13,37 @@ export default function Home() {
                 const file = e.clipboardData.files[0];
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setImage(reader.result);
+                    setImageURL(reader.result);
+
+
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = () => {
+                    setImage(img);
+                }
                 };
                 reader.readAsDataURL(file);
             }
         });
     }, []);
 
-   
-
     const uploadImage = (e) => {
         const file = e.target.files[0];
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            setImage(reader.result);
+            setImageURL(reader.result);
+
+            const img = new Image();
+            img.src = reader.result;
+            img.onload = () => {
+                setImage(img);
+            }
+
         };
         reader.readAsDataURL(file);
+
+
     }
 
     return (
@@ -42,7 +58,7 @@ export default function Home() {
             </div>
 
             {image ? 
-                <ImageDisplay image = {image} />
+                <ImageDisplay imageURL = {imageURL} image = {image} />
             : null}
 
 
