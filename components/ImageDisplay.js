@@ -8,9 +8,10 @@ const ImageDisplay = (props) => {
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
 
-    const [selection, setSelection] = useState([]);
+    const [selection, setSelection] = useState(new Array(24).fill(null).map(() => new Array(24).fill("rgb(0,0,0)")));
 
     const ctxRef = useRef(null);
+
     useEffect(() => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -21,35 +22,40 @@ const ImageDisplay = (props) => {
         ctx.drawImage(props.image, 0, 0);
 
         ctxRef.current = ctx;
+
+        placeBox(new Event('mousedown'), 0, 0);
+
     }, [props.image])
 
-    const placeBox = (e) => {
+    const placeBox = (e, xPos = null, yPos = null) => {
         e.stopPropagation();
 
         const sideLength = 24 / 2;
 
-        const x = e.nativeEvent.offsetX - sideLength;
-        if (x < 0)
-            x = 0;
-        else if (x > props.image.width - sideLength)
-            x = props.image.width - sideLength;
+        if (xPos === null)
+            xPos = e.nativeEvent.offsetX - sideLength;
+            
+        if (xPos < 0)
+            xPos = 0;
+        else if (xPos > props.image.width - sideLength)
+            xPos = props.image.width - sideLength;
 
-        const y = e.nativeEvent.offsetY - sideLength;
+        if (yPos === null)
+            yPos = e.nativeEvent.offsetY - sideLength;
 
-        if (y < 0)
-            y = 0;
-        else if (y > props.image.height - sideLength)
-            y = props.image.height - sideLength;
+        if (yPos < 0)
+            yPos = 0;
+        else if (yPos > props.image.height - sideLength)
+            yPos = props.image.height - sideLength;
 
-        setX(x);
-        setY(y);
-
+        setX(xPos);
+        setY(yPos);
     
         const matrix = new Array(24).fill(null).map(() => new Array(24).fill(""));
 
         for (let i = 0; i < 24; i++) {
             for (let j = 0; j < 24; j++) {
-                const pixel = ctxRef.current.getImageData(x + i, y + j, 1, 1).data;
+                const pixel = ctxRef.current.getImageData(xPos + i, yPos + j, 1, 1).data;
                 matrix[j][i] = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
             }
         }
@@ -60,8 +66,8 @@ const ImageDisplay = (props) => {
     return ( 
     <div className = "lg:grid lg:grid-cols-2 lg:gap-2">
 
-        <div className = "p-4 bg-stone-600 rounded mx-auto my-auto w-full h-96">
-            <div id = "imgContainer" className = "relative overflow-scroll w-full h-full cursor-crosshair" 
+        <div className = "p-4 rounded mx-auto my-auto w-full h-96">
+            <div id = "imgContainer" className = "relative overflow-auto w-full h-full cursor-crosshair" 
                 draggable = {false}
                 onMouseMove={(e) => {if (mouseDown) placeBox(e);}}
                 onMouseDown={(e) => {placeBox(e); setMouseDown(true)}}

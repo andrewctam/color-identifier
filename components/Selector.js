@@ -2,12 +2,18 @@ import Pixel from './Pixel';
 import { useState } from 'react';
 
 const Selector = (props) => {
-    const [colorSelected, setColorSelected] = useState("rgb(0, 0, 0)");
-    const [selected, setSelected] = useState("");
+    const [selectedX, setSelectedX] = useState(0);
+    const [selectedY, setSelectedY] = useState(0);
+    const select = (x, y) => {
+        setSelectedX(x);
+        setSelectedY(y);
+        
+    }
 
     return (
         <div>
-            <table className='mx-auto mt-3'>
+            <p className = "text-center text-xl text-white my-3">Click on a pixel below to select it</p>
+            <table className='mx-auto'>
                 <tbody>
                 {props.selection ? 
                     props.selection.map((row, i) => 
@@ -18,7 +24,8 @@ const Selector = (props) => {
                             key = {i + "," + j} 
                             x = {i} 
                             y = {j} 
-                            setColorSelected = {setColorSelected} 
+                            select = {select} 
+                            selected = {selectedX === i && selectedY === j}
                         />
                         )}
                     </tr>)
@@ -26,8 +33,11 @@ const Selector = (props) => {
                 </tbody>
             </table>
 
-            <div className = "text-center text-xl " style = {{"backgroundColor": colorSelected}}>
-                {colorSelected}
+            <div className = "text-center text-xl text-white my-3"> {
+                props.selection ?
+                    props.selection[selectedX][selectedY]
+                : "Select a Pixel"
+            }
             </div>
 
         </div>

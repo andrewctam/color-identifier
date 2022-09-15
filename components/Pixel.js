@@ -1,11 +1,14 @@
 import { useState } from "react"
 const Pixel = (props) => {
-    const [hover, setHover] = useState(false)
+    const [hovered, setHovered] = useState(false)
 
-    return <td className = "w-4 h-4 border border-black m-1" 
-            style={{
-                "backgroundColor": props.color
-            }} onClick = {() => {props.setColorSelected(props.color)}}/>
+    const style = {
+        "backgroundColor": props.color,
+        "border": props.selected ? "2px solid rgb(206, 87, 84)" : hovered ? "2px solid black" : "1px solid black",
+    }
+
+    return <td className = "w-4 h-4 m-1" style={style} onClick = {() => {props.select(props.x, props.y)}} 
+    onMouseEnter = {() => {setHovered(true)}} onMouseLeave={() => {setHovered(false)}} />
 }
 
 export default Pixel
