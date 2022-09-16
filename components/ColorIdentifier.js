@@ -9,16 +9,19 @@ const ColorIdentifier = (props) => {
     const [canvasStartX, setCanvasStartX] = useState(0);
     const [canvasStartY, setCanvasStartY] = useState(0);
     
+
     const imageBoxRef = useRef(null);
     const ctxRef = useRef(null);
     const canvasRef = useRef(null);
 
     
-
+    const cropNecessary = imageBoxRef.current && 
+                    props.image &&
+                        (props.image.width > canvasRef.current.offsetWith || 
+                        props.image.height > canvasRef.current.offsetHeight);
     return ( 
     <div>
-         {imageBoxRef.current && props.image &&
-         (props.image.width > canvasRef.current.offsetWith || props.image.height > canvasRef.current.offsetHeight ) ? 
+         {cropNecessary ? 
         <CropImage image = {props.image} imageURL = {props.imageURL} setSelection = {setSelection}
             canvasWidth = {canvasRef.current.offsetWidth - 2} 
             canvasHeight = {canvasRef.current.offsetHeight - 2}

@@ -14,6 +14,7 @@ const CropImage = (props) => {
             setScale(props.image.width / imgRef.current.width);
         } 
     }, [])
+
     const placeBox = (e, xPos = null, yPos = null) => {
         if (props.image.width > imgRef.current.width) {
             var scale = props.image.width / imgRef.current.width;
@@ -51,7 +52,7 @@ const CropImage = (props) => {
     }
 
     return (
-        <div className="mx-auto w-full bg-stone-400 p-1 m-3 rounded-xl h-3/4-screen">
+        <div className="mx-auto bg-stone-400 p-1 m-3 rounded-xl">
             <div className="relative mx-auto cursor-crosshair w-full h-full"
                 draggable={false}
                 onMouseMove={(e) => { if (mouseDown) placeBox(e); }}

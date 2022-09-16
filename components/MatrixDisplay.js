@@ -2,8 +2,8 @@ import Pixel from './Pixel';
 import { useState } from 'react';
 
 const MatrixDisplay = (props) => {
-    const [selectedX, setSelectedX] = useState(0);
-    const [selectedY, setSelectedY] = useState(0);
+    const [selectedX, setSelectedX] = useState(15);
+    const [selectedY, setSelectedY] = useState(15);
     const select = (x, y) => {
         setSelectedX(x);
         setSelectedY(y);
