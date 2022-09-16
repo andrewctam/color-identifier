@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import ImageDisplay from '../components/ImageDisplay';
+import ColorIdentifier from './ColorIdentifier';
 
 
 const App = (props) => {
@@ -59,7 +59,7 @@ const App = (props) => {
             <input type='file' onInput={uploadImage} />
         </div>
     
-        <ImageDisplay imageURL = {imageURL} image = {image} />
+        <ColorIdentifier imageURL = {imageURL} image = {image} />
     </div>)
 }
 

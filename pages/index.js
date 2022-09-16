@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <div className={"p-5"}>
             <Head>
-                <title>Matrix Generator</title>
+                <title>Image Color Identifier</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
 

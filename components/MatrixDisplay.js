@@ -1,7 +1,7 @@
 import Pixel from './Pixel';
 import { useState } from 'react';
 
-const Selector = (props) => {
+const MatrixDisplay = (props) => {
     const [selectedX, setSelectedX] = useState(0);
     const [selectedY, setSelectedY] = useState(0);
     const select = (x, y) => {
@@ -19,16 +19,27 @@ const Selector = (props) => {
         return "#" + toHex(rgb[0]) + toHex(rgb[1]) + toHex(rgb[2]);
     }
 
+    const darkOrWhiteText = (hex) => { //#123456
+        var brightness = Math.round((
+                    (Number("0x" + hex.substring(1, 3)) * 299) +
+                    (Number("0x" + hex.substring(3, 5)) * 587) +
+                    (Number("0x" + hex.substring(5)) * 114)) / 1000);
+        return (brightness > 125) ? 'black' : 'white';
+
+    }
+
     if (props.selection) {
         var rgb = props.selection[selectedX][selectedY]
         var hex = rgbToHex(rgb);
+        var textColor = darkOrWhiteText(hex)
     } else {
         rgb = "";
         hex = "";
-
+        textColor = "white";
     }
+
     return (
-        <div className = "bg-stone-600 rounded-xl w-full h-fit mx-auto lg:mt-0 mt-2">
+        <div className = "bg-stone-400 rounded-xl w-full h-full mx-auto lg:mt-0 m-2 p-2">
             <p className = "text-center text-xl text-white my-3">Click on a pixel below to select a color</p>
             <table className='mx-auto' >
                 <tbody>
@@ -50,10 +61,9 @@ const Selector = (props) => {
                 </tbody>
             </table>
 
-            <div className = "text-center text-xl text-white my-3 p-3">
-                <input readOnly = {true} className = "inline-block p-5 border border-black text-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" value = {rgb} onClick = {(e) => {e.target.select()}}/>
-                <div className = "inline-block w-6 h-6 rounded-2xl mx-auto border border-black" style = {{"backgroundColor": props.selection[selectedX][selectedY]}} />
-                <input readOnly = {true} className = "inline-block p-5 border border-black text-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" value = {hex} onClick = {(e) => {e.target.select()}}/>
+            <div className = "text-center text-white my-3 p-3">
+                <input value = {rgb} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": props.selection[selectedX][selectedY], color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
+                <input value = {hex} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": props.selection[selectedX][selectedY], color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
             </div>
             
 
@@ -62,4 +72,4 @@ const Selector = (props) => {
     )
 }
 
-export default Selector;
+export default MatrixDisplay;

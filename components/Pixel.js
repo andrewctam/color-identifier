@@ -8,7 +8,7 @@ const Pixel = (props) => {
         "outline": props.selected ? "2px solid rgb(206, 87, 84)" : "none"
     }
 
-    return <td className = "lg:w-4 lg:h-4 w-8 h-8 m-1" style={style} onClick = {() => {props.select(props.x, props.y)}} 
+    return <td className = "w-4 h-4 m-1" style={style} onClick = {() => {props.select(props.x, props.y)}} 
     onMouseEnter = {() => {setHovered(true)}} onMouseLeave={() => {setHovered(false)}} />
 }
 

@@ -6,8 +6,8 @@ module.exports = {
   ],
   theme: {
     extend: {
-      gridTemplateColumns: {
-        "thirds": "2fr 1fr"
+      spacing: {
+        "h-3/4-screen": "75vh",
       }
     }, 
   },
