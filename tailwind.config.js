@@ -9,7 +9,7 @@ module.exports = {
       gridTemplateColumns: {
         "thirds": "2fr 1fr"
       }
-    },
+    }, 
   },
   plugins: [],
 }
