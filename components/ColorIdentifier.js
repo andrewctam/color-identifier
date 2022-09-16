@@ -20,7 +20,8 @@ const ColorIdentifier = (props) => {
                         (props.image.width > canvasRef.current.offsetWith || 
                         props.image.height > canvasRef.current.offsetHeight);
     return ( 
-    <div>
+    <div className = "bg-stone-600 rounded-xl">
+         
          {cropNecessary ? 
         <CropImage image = {props.image} imageURL = {props.imageURL} setSelection = {setSelection}
             canvasWidth = {canvasRef.current.offsetWidth - 2} 
@@ -28,7 +29,6 @@ const ColorIdentifier = (props) => {
             setCanvasStartX = {setCanvasStartX}
             setCanvasStartY = {setCanvasStartY}
          /> : null}
-
 
 
         <div className = "lg:grid lg:grid-cols-2 lg:gap-2">

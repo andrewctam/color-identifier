@@ -52,8 +52,8 @@ const CropImage = (props) => {
     }
 
     return (
-        <div className="mx-auto bg-stone-400 p-1 m-3 rounded-xl">
-            <div className="relative mx-auto cursor-crosshair w-full h-full"
+        <div className="mx-auto mt-5">
+            <div className="relative mx-auto cursor-crosshair w-fit h-fit"
                 draggable={false}
                 onMouseMove={(e) => { if (mouseDown) placeBox(e); }}
                 onMouseDown={(e) => { placeBox(e); setMouseDown(true) }}

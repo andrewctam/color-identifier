@@ -6,7 +6,6 @@ const App = (props) => {
     const [image, setImage] = useState(null);
     const [imageURL, setImageURL] = useState("");
 
-
     useEffect (() => {
         document.querySelector("body").classList.add("bg-stone-300");
 
@@ -51,8 +50,8 @@ const App = (props) => {
     }
 
     return  (
-    <div className="text-black mx-auto text-center w-fit p-10 select-none">
-        <h1 className="text-5xl">Image Color Identifier</h1>
+    <div className="text-black mx-auto text-center w-fit py-10 px-1 select-none">
+        <a href = "."><h1 className="text-5xl">Image Color Identifier</h1></a>
 
         <p className="text-lg text-gray-700 mt-8">Paste an image, or upload one below</p>
         <div className="w-fit bg-stone-400 mx-auto p-3 mb-8 rounded-xl" >

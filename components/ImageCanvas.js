@@ -77,7 +77,7 @@ const ImageCanvas = (props) => {
     }
 
     return (
-        <div ref={props.imageBoxRef} className="mx-auto w-96 bg-stone-400 p-2 rounded-xl h-96">
+        <div ref={props.imageBoxRef} className="m-auto w-96 h-96">
             <div className="relative mx-auto cursor-crosshair w-full h-full "
                 draggable={false}
                 onMouseMove={(e) => { if (mouseDown) placeBox(e); }}

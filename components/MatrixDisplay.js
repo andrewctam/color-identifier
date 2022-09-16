@@ -39,8 +39,8 @@ const MatrixDisplay = (props) => {
     }
 
     return (
-        <div className = "bg-stone-400 rounded-xl w-full h-full mx-auto lg:mt-0 m-2 p-2">
-            <p className = "text-center text-xl text-white my-3">Click on a pixel below to select a color</p>
+        <div className = "bg-zinc-400 rounded-r-xl w-full h-full mx-auto lg:mt-0 m-2 p-2">
+            <p className = "text-center text-xl text-black my-3">Click on a pixel below to select a color</p>
             <table className='mx-auto' >
                 <tbody>
                 {props.selection ? 
