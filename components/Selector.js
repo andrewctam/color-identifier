@@ -29,7 +29,7 @@ const Selector = (props) => {
     }
     return (
         <div className = "bg-stone-600 rounded-xl w-full h-fit mx-auto lg:mt-0 mt-2">
-            <p className = "text-center text-xl text-white my-3">Click on a pixel below to select it</p>
+            <p className = "text-center text-xl text-white my-3">Click on a pixel below to select a color</p>
             <table className='mx-auto' >
                 <tbody>
                 {props.selection ? 
@@ -50,12 +50,12 @@ const Selector = (props) => {
                 </tbody>
             </table>
 
-            <div className = "text-center text-xl text-white my-3">
-                <p>{rgb}</p>
-                <p>{hex}</p>
+            <div className = "text-center text-xl text-white my-3 p-3">
+                <input readOnly = {true} className = "inline-block p-5 border border-black text-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" value = {rgb} onClick = {(e) => {e.target.select()}}/>
+                <div className = "inline-block w-6 h-6 rounded-2xl mx-auto border border-black" style = {{"backgroundColor": props.selection[selectedX][selectedY]}} />
+                <input readOnly = {true} className = "inline-block p-5 border border-black text-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" value = {hex} onClick = {(e) => {e.target.select()}}/>
             </div>
             
-            <div className = "w-8 h-8 rounded-2xl mx-auto my-2" style = {{"backgroundColor": props.selection[selectedX][selectedY]}}></div>
 
 
         </div>
