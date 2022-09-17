@@ -3,12 +3,12 @@ import SelectionBox from './SelectionBox';
 
 const ImageCanvas = (props) => {
     const [mouseDown, setMouseDown] = useState(false);
-
+    const [defaultTop, setDefaultTop] = useState("386px");
+    const [defaultLeft, setDefaultLeft] = useState("193px");
     useEffect(() => {
         drawCanvas();
         //eslint-disable-next-line
     }, [props.image, props.canvasStartX, props.canvasStartY, props.extraX, props.extraY]);
-    
 
     const drawCanvas = () => {
         const canvas = props.canvasRef.current;
@@ -21,7 +21,9 @@ const ImageCanvas = (props) => {
 
             ctx.drawImage(props.image, props.canvasStartX, props.canvasStartY, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height); 
 
-            placeBox(new Event('mousedown'), canvas.width / 2 - props.boxSize / 2 + props.extraX, canvas.height / 2 - props.boxSize / 2 + props.extraY);            
+            placeBox(new Event('mousedown'),
+                    canvas.width / 2 - props.boxSize / 2 + props.extraX,
+                    canvas.height / 2 - props.boxSize / 2 + props.extraY);            
     
         } else {
             canvas.width = props.imageBoxRef.current.offsetWidth;
@@ -60,11 +62,39 @@ const ImageCanvas = (props) => {
     }
 
 
-   
+    useEffect(() => {
+        if (window.innerWidth >= 768) {
+            setDefaultTop("386px");
+            setDefaultLeft("193px")
+        } else {
+            setDefaultTop("290px")
+            setDefaultLeft("145px")
+        }
+    }, []);
+    
 
+    const handleKeyDown = (e) => {
+        if (38 <= e.keyCode && e.keyCode <= 40) {
+            e.preventDefault();
+        } else {
+            return;
+        }
+        
+        if (e.keyCode === 40) {
+            props.setCanvasMouseY(props.canvasMouseY + 1);
+        } else if (e.keyCode === 38) {
+            props.setCanvasMouseY(props.canvasMouseY - 1);
+        } else if (e.keyCode === 37) {
+            props.setCanvasMouseX(props.canvasMouseX - 1);
+        } else if (e.keyCode === 39) {
+            props.setCanvasMouseX(props.canvasMouseX + 1);
+        }
+    }
+    
+    
     return (
-        <div ref={props.imageBoxRef} className="w-96 h-96">
-            <div className="relative cursor-crosshair w-fit h-fit"
+        <div ref={props.imageBoxRef} className="md:w-96 md:h-96 w-72 h-72" onKeyDown={handleKeyDown} tabIndex ={1}>
+            <div className="relative cursor-crosshair w-fit h-fit touch-none"
                 draggable={false}
                 onPointerMove={(e) => { if (mouseDown) placeBox(e); }}
                 onPointerDown={(e) => { placeBox(e); setMouseDown(true) }}
@@ -76,9 +106,9 @@ const ImageCanvas = (props) => {
             </div>
 
             <p className = "absolute overflow-none break-normal whitespace-nowrap" style ={{
-                top: props.canvasRef.current ? props.canvasRef.current.offsetHeight : "386px",
+                top: props.canvasRef.current ? props.canvasRef.current.offsetHeight : defaultTop,
                 translate: "-50%",
-                left: props.canvasRef.current ? props.canvasRef.current.offsetWidth / 2 : "193px",
+                left: props.canvasRef.current ? props.canvasRef.current.offsetWidth / 2 : defaultLeft,
             }} >Click or drag to fine tune your selection</p>
         </div>
 

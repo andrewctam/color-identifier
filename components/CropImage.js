@@ -69,9 +69,11 @@ const CropImage = (props) => {
         props.setExtraY(extraY * scale);
     }
 
+ 
+    
     return (
-        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-500">
-            <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2"
+        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-500 px-4">
+            <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2 touch-none"
                 draggable={false}
                 onPointerMove={(e) => { if (mouseDown) placeBox(e); }}
                 onPointerDown={(e) => { placeBox(e); setMouseDown(true) }}

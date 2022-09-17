@@ -8,6 +8,19 @@ const MatrixDisplay = (props) => {
         setSelectedX(x);
         setSelectedY(y);
     }
+    const zoom = (e) => {
+        const updated = parseInt(e.target.value)
+    
+        if (selectedX >= updated) {
+            setSelectedX(updated - 1);
+        }
+        if (selectedY >= updated) {
+            setSelectedY(updated - 1);
+        }
+
+        props.setBoxSize(updated);
+        
+    }
 
     const toHex = (str) => {
         const hex = parseInt(str).toString(16)
@@ -27,101 +40,55 @@ const MatrixDisplay = (props) => {
 
     }
 
-    //use for loops over map to splice matrix if necessary since boxSize may be less than the selection size
+    const getPixel = (i, j) => {
+        if (props.ctxRef)
+            var pixel = props.ctxRef.current.getImageData(props.canvasMouseX + j, props.canvasMouseY + i, 1, 1).data; //swap i and j to rotate img
+        else
+            pixel = [120, 114, 108];
 
-    if (selectedX >= props.boxSize) {
-        var x = props.boxSize - 1;
-        setSelectedX(x)
-    } else {
-        x = selectedX;
-    }
-
-    if (selectedY >= props.boxSize) {
-        var y = props.boxSize - 1;
-        setSelectedY(y)
-    } else {
-        y = selectedY;
-    }
-
-    
-    if (props.ctxRef) {
-
-        var matrix = new Array(props.boxSize).fill().map(
-            (row, i) =>
-                <tr key = {"row" + i}> 
-                {
-                    new Array(props.boxSize).fill().map(
-                        (col, j) => {
-                        const pixel = props.ctxRef.current.getImageData(props.canvasMouseX + j, props.canvasMouseY + i, 1, 1).data; //swap i and j to rotate img
-
-                        return <Pixel 
-                            color = {`rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`} 
-                            key = {i + "," + j} 
-                            x = {i} 
-                            y = {j} 
-                            select = {select} 
-                            selected = {selectedX === i && selectedY === j}
-                            boxSize = {props.boxSize}
-                    />})
-                }
-                
-            </tr>
-        )
-            
-    } else {
-        matrix = new Array(props.boxSize).fill().map(
-            (row, i) => 
-                <tr key = {"row" + i}> 
-                {
-                    new Array(props.boxSize).fill().map(
-                        (col, j) => 
-                        <Pixel 
-                            color = {"rgb(120, 114, 108)"} 
-                            key = {i + "," + j} 
-                            x = {i} 
-                            y = {j} 
-                            select = {select} 
-                            selected = {selectedX === i && selectedY === j}
-                            boxSize = {props.boxSize}
-                    />)
-                } 
-            </tr>
-        )
+        return <Pixel 
+            color = {`rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`} 
+            key = {i + "," + j} 
+            x = {i} 
+            y = {j} 
+            select = {select} 
+            selected = {selectedX === i && selectedY === j}
+            boxSize = {props.boxSize} />
     }
 
 
-
-    var rgb = matrix[x].props.children[y].props.color
-    var hex = rgbToHex(rgb);
-    var textColor = darkOrWhiteText(hex)
-
-   
+    const matrix = new Array(props.boxSize).fill().map( (row, i) =>
+        <tr key = {"row" + i}> 
+            { new Array(props.boxSize).fill().map( (col, j) =>  getPixel(i, j) ) }
+        </tr>
+    )
 
     console.log(matrix)
+
+        
+    const rgb = matrix[selectedX].props.children[selectedY].props.color
+    const hex = rgbToHex(rgb);
+    const textColor = darkOrWhiteText(hex)
+
+
+
     return (
         <div className = "w-full h-full mx-auto p-4">
-            
-            <div>
-                <input type="range" min="1" max="32" step = "1" className = "accent-slate-600" value={props.boxSize} onChange = {(e) => {props.setBoxSize(parseInt(e.target.value))}}/>
-                <br/>
-                {props.boxSize + " x " + props.boxSize}
-            </div>
-
-            <table className='mx-auto cursor-crosshair'>
-                
-                <tbody>
-                    {matrix}
-                </tbody>
+            <table className='mx-auto cursor-crosshair'>        
+                <tbody> {matrix} </tbody>
             </table>
 
             <p>Click on a pixel to select a color</p>
-
+            <div>
+                <p> {props.boxSize + " x " + props.boxSize} </p>
+                <input type="range" min="1" max="32" step = "1" className = "accent-slate-600" value={props.boxSize} onChange = {zoom}/>
+            </div>
             <div className = "text-center text-white p-3">
-                <input value = {rgb} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
-                <input value = {hex} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
+                <input value = {rgb} className = "inline-block p-2 border border-black text-center w-5/12 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
+                <input value = {hex} className = "inline-block p-2 border border-black text-center w-5/12 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
             </div>
 
-
+            
         </div>
     )
 }
