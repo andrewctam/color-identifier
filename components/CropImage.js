@@ -9,6 +9,7 @@ const CropImage = (props) => {
     const [scale, setScale] = useState(1);
     const imgRef = useRef(null);
     const cropBackgroundRef = useRef(null)
+
     useEffect(() => {
         if (props.image.width > imgRef.current.width) {
             setScale(props.image.width / imgRef.current.width);
@@ -19,6 +20,8 @@ const CropImage = (props) => {
     }, [props.image])
 
     const placeBox = (e, xPos = null, yPos = null) => {
+        e.stopPropagation();
+
         if (props.image.width > imgRef.current.width) {
             var scale = props.image.width / imgRef.current.width;
         } else {
@@ -36,7 +39,8 @@ const CropImage = (props) => {
 
 
         if (xPos > maxWidth) {
-            var extraX =  xPos - maxWidth;
+            //offset from middle in ImageCanvas
+            var extraX = xPos - maxWidth; 
             xPos = maxWidth
         } else if (xPos < 0) {
             extraX = xPos;
@@ -45,9 +49,8 @@ const CropImage = (props) => {
             extraX = 0;
         }
 
-
         if (yPos > maxHeight) {
-            var extraY =  yPos - maxHeight;
+            var extraY =  yPos - maxHeight; //offset from middle in ImageCanvas
             yPos = maxHeight
         } else if (yPos < 0) {
             extraY = yPos;
@@ -64,18 +67,15 @@ const CropImage = (props) => {
         setY(yPos);
         props.setCanvasStartY(yPos * scale);
         props.setExtraY(extraY * scale);
-        
-        
-        e.stopPropagation();
     }
 
     return (
         <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-500">
             <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2"
                 draggable={false}
-                onMouseMove={(e) => { if (mouseDown) placeBox(e); }}
-                onMouseDown={(e) => { placeBox(e); setMouseDown(true) }}
-                onMouseUp={() => { setMouseDown(false) }}>
+                onPointerMove={(e) => { if (mouseDown) placeBox(e); }}
+                onPointerDown={(e) => { placeBox(e); setMouseDown(true) }}
+                onPointerUp={() => { setMouseDown(false) }}>
                 
                 <img alt = {"Uploaded Image"} ref = {imgRef} src={props.imageURL} draggable = {false}/>
 

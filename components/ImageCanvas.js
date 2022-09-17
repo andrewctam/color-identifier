@@ -1,12 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import SelectionBox from './SelectionBox';
 
 const ImageCanvas = (props) => {
     const [mouseDown, setMouseDown] = useState(false);
-    const [x, setX] = useState(0);
-    const [y, setY] = useState(0);
 
-    const [boxSize, setBoxSize] = useState(32);
+    useEffect(() => {
+        drawCanvas();
+        //eslint-disable-next-line
+    }, [props.image, props.canvasStartX, props.canvasStartY, props.extraX, props.extraY]);
+    
 
     const drawCanvas = () => {
         const canvas = props.canvasRef.current;
@@ -19,7 +21,7 @@ const ImageCanvas = (props) => {
 
             ctx.drawImage(props.image, props.canvasStartX, props.canvasStartY, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height); 
 
-            placeBox(new Event('mousedown'), canvas.width / 2 - boxSize / 2 + props.extraX, canvas.height / 2 - boxSize / 2 + props.extraY);            
+            placeBox(new Event('mousedown'), canvas.width / 2 - props.boxSize / 2 + props.extraX, canvas.height / 2 - props.boxSize / 2 + props.extraY);            
     
         } else {
             canvas.width = props.imageBoxRef.current.offsetWidth;
@@ -30,21 +32,14 @@ const ImageCanvas = (props) => {
         }
     }
 
-    useEffect(() => {
-        drawCanvas();
-        //eslint-disable-next-line
-    }, [props.image, props.canvasStartX, props.canvasStartY, props.extraX, props.extraY]);
-    
-    useEffect(() => {
-        //window.addEventListener('resize', drawCanvas);
-        placeBox(new Event('mousedown'), 0, 0);
-        //eslint-disable-next-line
-    }, [])
+   
 
     const placeBox = (e, xPos = null, yPos = null) => {
-        const sideLength = boxSize / 2;
+        e.stopPropagation();
 
-        const maxWidth = props.canvasRef.current.offsetWidth - sideLength * 2 - 2;
+        const sideLength = props.boxSize / 2;
+
+        const maxWidth = props.canvasRef.current.offsetWidth - sideLength * 2 - 2; // -2 for border
         const maxHeight = props.canvasRef.current.offsetHeight - sideLength * 2 - 2;
 
         if (xPos === null)
@@ -60,35 +55,24 @@ const ImageCanvas = (props) => {
         yPos = Math.max(0, yPos)
         yPos = Math.min(maxHeight, yPos)
 
-        setX(xPos);
-        setY(yPos);
-
-
-        if (props.image) {
-            const matrix = new Array(32).fill(null).map(() => new Array(32).fill(""));
-
-            for (let i = 0; i < 32; i++) {
-                for (let j = 0; j < 32; j++) {
-                    const pixel = props.ctxRef.current.getImageData(xPos + i, yPos + j, 1, 1).data;
-                    matrix[j][i] = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
-                }
-            }
-            props.setSelection(matrix)
-        }
-        e.stopPropagation();
+        props.setCanvasMouseX(xPos);
+        props.setCanvasMouseY(yPos);
     }
+
+
+   
 
     return (
         <div ref={props.imageBoxRef} className="w-96 h-96">
             <div className="relative cursor-crosshair w-fit h-fit"
                 draggable={false}
-                onMouseMove={(e) => { if (mouseDown) placeBox(e); }}
-                onMouseDown={(e) => { placeBox(e); setMouseDown(true) }}
-                onMouseUp={() => { setMouseDown(false) }}>
+                onPointerMove={(e) => { if (mouseDown) placeBox(e); }}
+                onPointerDown={(e) => { placeBox(e); setMouseDown(true) }}
+                onPointerUp={() => { setMouseDown(false) }}>
 
                 <canvas ref={props.canvasRef} className = "m-auto border border-black"/>
 
-                <SelectionBox x={x} y={y} width={boxSize} height={boxSize} />
+                <SelectionBox x={props.canvasMouseX} y={props.canvasMouseY} width={props.boxSize} height={props.boxSize} />
             </div>
 
             <p className = "absolute overflow-none break-normal whitespace-nowrap" style ={{

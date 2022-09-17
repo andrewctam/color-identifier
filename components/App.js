@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import ColorIdentifier from './ColorIdentifier';
 
 
@@ -74,7 +74,7 @@ const App = (props) => {
 
             <p className="text-lg text-white mt-4">Paste an image or upload one below</p>
             <div className="bg-stone-400 max-w-fit mx-auto p-3 rounded-xl" >
-                <input type='file' onInput={uploadImage} accept = {".png, .jpg, .jpeg, .gif, .bmp, .tiff, .webp"} />
+                <input className = "overflow-hidden whitespace-nowrap text-ellipsis flex" type='file' onInput={uploadImage} accept = {".png, .jpg, .jpeg, .gif, .bmp, .tiff, .webp"} />
             </div>
         </div>
 
