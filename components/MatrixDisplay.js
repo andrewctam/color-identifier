@@ -60,7 +60,7 @@ const MatrixDisplay = (props) => {
                 </tbody>
             </table>
 
-            <p>Click on a pixel to select the color</p>
+            <p>Click on a pixel to select a color</p>
 
             <div className = "text-center text-white p-3">
                 <input value = {rgb} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": props.selection[selectedX][selectedY], color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />

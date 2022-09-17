@@ -70,7 +70,7 @@ const CropImage = (props) => {
     }
 
     return (
-        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-600">
+        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-500">
             <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2"
                 draggable={false}
                 onMouseMove={(e) => { if (mouseDown) placeBox(e); }}
@@ -81,10 +81,10 @@ const CropImage = (props) => {
 
                 <SelectionBox x={x} y={y} width = {props.canvasWidth / scale} height={props.canvasHeight / scale} />
             </div>
-            <p className = "text-white">Click or drag on the image to select an area. Then fine tune your selection below</p>
+            <p className = "text-white">Click or drag to select part of your image. Then, fine tune your selection below</p>
         </div>
 
     )
 }
 
-export default CropImage
+export default CropImage;

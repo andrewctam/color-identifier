@@ -10,29 +10,41 @@ const App = (props) => {
     useEffect (() => {
         document.querySelector("body").classList.add("bg-stone-300");
 
-
         document.addEventListener('paste', (e) => {
-            if (e.clipboardData && e.clipboardData.files.length > 0) {
-                const file = e.clipboardData.files[0];
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    setImageURL(reader.result);
+            try {
+                if (e.clipboardData && e.clipboardData.files.length > 0) {
+                    const file = e.clipboardData.files[0];
+                    if (!file['type'].includes("image")) {
+                        alert("Invalid file type. Please paste an image");
+                        return;
+                    }
 
 
-                const img = new Image();
-                img.src = reader.result;
-                img.onload = () => {
-                    setImage(img);
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setImageURL(reader.result);
+                        const img = new Image();
+                        img.src = reader.result;
+                        img.onload = () => {
+                            setImage(img);
+                        }
+                    };
+                    reader.readAsDataURL(file);
                 }
-                };
-                reader.readAsDataURL(file);
+            } catch (error) {
+                alert("Error uploading image. Please try again.")
             }
         });
 
     }, []);
 
     const uploadImage = (e) => {
+        try {
         const file = e.target.files[0];
+        if (!file['type'].includes("image")) {
+            alert("Invalid file type. Please upload an image");
+            return;
+        }
 
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -46,22 +58,23 @@ const App = (props) => {
 
         };
         reader.readAsDataURL(file);
+    } catch (error) {
+        alert("Error uploading image. Please try again.");
+    }
 
 
     }
 
     return  (
     <div className="text-black mx-auto text-center w-full select-none">
-        <div className = "w-full bg-stone-500 p-10 ">
+        <div className = "w-full bg-stone-600 p-10 ">
             <a href = ".">
-                <h1 className="text-6xl text-slate-300 font-semibold inline-block">Image&nbsp;</h1>
-                <h1 className="text-6xl text-slate-200 font-semibold inline-block">Color&nbsp;</h1>
-                <h1 className="text-6xl text-zinc-200 font-semibold inline-block"> Identifier&nbsp;</h1>
+                <h1 className="text-6xl text-slate-300 font-semibold inline-block">Image Color Identifier</h1>
             </a>
 
-            <p className="text-lg text-white mt-8">Paste an image or upload one below</p>
-            <div className="bg-stone-400 max-w-fit mx-auto p-3 mb-8 rounded-xl" >
-                <input type='file' onInput={uploadImage} />
+            <p className="text-lg text-white mt-4">Paste an image or upload one below</p>
+            <div className="bg-stone-400 max-w-fit mx-auto p-3 rounded-xl" >
+                <input type='file' onInput={uploadImage} accept = {".png, .jpg, .jpeg, .gif, .bmp, .tiff, .webp"} />
             </div>
         </div>
 

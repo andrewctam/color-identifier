@@ -44,8 +44,8 @@ const ImageCanvas = (props) => {
     const placeBox = (e, xPos = null, yPos = null) => {
         const sideLength = boxSize / 2;
 
-        const maxWidth = Math.min(props.imageBoxRef.current.offsetWidth, props.canvasRef.current.offsetWidth) - sideLength * 2 - 2;
-        const maxHeight = Math.min(props.imageBoxRef.current.offsetWidth, props.canvasRef.current.offsetHeight) - sideLength * 2 - 2;
+        const maxWidth = props.canvasRef.current.offsetWidth - sideLength * 2 - 2;
+        const maxHeight = props.canvasRef.current.offsetHeight - sideLength * 2 - 2;
 
         if (xPos === null)
             xPos = e.nativeEvent.offsetX - sideLength;
