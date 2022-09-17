@@ -8,7 +8,7 @@ const App = (props) => {
   
 
     useEffect (() => {
-        document.querySelector("body").classList.add("bg-stone-400");
+        document.querySelector("body").classList.add("bg-stone-300");
 
 
         document.addEventListener('paste', (e) => {

@@ -36,7 +36,7 @@ const ColorIdentifier = (props) => {
 
 
         <div className = "lg:grid lg:grid-cols-2 lg:gap-2">
-            <div className = "mx-auto lg:my-auto w-fit h-fit rounded-xl mt-8 relative ">
+            <div className = "mx-auto lg:my-auto w-fit h-fit rounded-xl mt-8 mb-6 relative">
                 <ImageCanvas image = {props.image} setSelection = {setSelection}
                     imageBoxRef = {imageBoxRef}
                     ctxRef = {ctxRef}
@@ -53,10 +53,6 @@ const ColorIdentifier = (props) => {
                     width: canvasRef.current ? canvasRef.current.offsetWidth : "368px",
                     height: canvasRef.current ? canvasRef.current.offsetHeight : "368px"
                 }}></div>
-
-                <p>Click or drag on the image to fine tune your selection</p>
-
-
             </div>
 
             <MatrixDisplay selection = {selection} />

@@ -44,8 +44,8 @@ const ImageCanvas = (props) => {
     const placeBox = (e, xPos = null, yPos = null) => {
         const sideLength = boxSize / 2;
 
-        const maxWidth = props.canvasRef.current.offsetWidth - sideLength * 2 - 2;
-        const maxHeight = props.canvasRef.current.offsetHeight - sideLength * 2 - 2;
+        const maxWidth = Math.min(props.imageBoxRef.current.offsetWidth, props.canvasRef.current.offsetWidth) - sideLength * 2 - 2;
+        const maxHeight = Math.min(props.imageBoxRef.current.offsetWidth, props.canvasRef.current.offsetHeight) - sideLength * 2 - 2;
 
         if (xPos === null)
             xPos = e.nativeEvent.offsetX - sideLength;
@@ -90,6 +90,12 @@ const ImageCanvas = (props) => {
 
                 <SelectionBox x={x} y={y} width={boxSize} height={boxSize} />
             </div>
+
+            <p className = "absolute overflow-none break-normal whitespace-nowrap" style ={{
+                top: props.canvasRef.current ? props.canvasRef.current.offsetHeight : "386px",
+                translate: "-50%",
+                left: props.canvasRef.current ? props.canvasRef.current.offsetWidth / 2 : "193px",
+            }} >Click or drag to fine tune your selection</p>
         </div>
 
     )
