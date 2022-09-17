@@ -11,16 +11,20 @@ const CropImage = (props) => {
     const cropBackgroundRef = useRef(null)
 
     useEffect(() => {
+        cropBackgroundRef.current.scrollIntoView()
+        
         if (props.image.width > imgRef.current.width) {
             setScale(props.image.width / imgRef.current.width);
         } 
-        
-        cropBackgroundRef.current.scrollIntoView()
+
+        setX(0);
+        setY(0);
     //eslint-disable-next-line
     }, [props.image])
 
     const placeBox = (e, xPos = null, yPos = null) => {
-        e.stopPropagation();
+        if (e)
+            e.stopPropagation();
 
         if (props.image.width > imgRef.current.width) {
             var scale = props.image.width / imgRef.current.width;
@@ -50,7 +54,8 @@ const CropImage = (props) => {
         }
 
         if (yPos > maxHeight) {
-            var extraY =  yPos - maxHeight; //offset from middle in ImageCanvas
+            //offset from middle in ImageCanvas
+            var extraY = yPos - maxHeight;
             yPos = maxHeight
         } else if (yPos < 0) {
             extraY = yPos;
@@ -70,10 +75,9 @@ const CropImage = (props) => {
     }
 
  
-    
     return (
-        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-500 px-4">
-            <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2 touch-none"
+        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-600 px-4">
+            <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2 touch-none border border-black"
                 draggable={false}
                 onPointerMove={(e) => { if (mouseDown) placeBox(e); }}
                 onPointerDown={(e) => { placeBox(e); setMouseDown(true) }}
@@ -83,7 +87,7 @@ const CropImage = (props) => {
 
                 <SelectionBox x={x} y={y} width = {props.canvasWidth / scale} height={props.canvasHeight / scale} />
             </div>
-            <p className = "text-white">Click or drag to select part of your image. Then, fine tune your selection below</p>
+            <p className = "text-white">Click or drag to crop out part of your image. Then, fine tune your selection below</p>
         </div>
 
     )

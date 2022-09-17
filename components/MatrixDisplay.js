@@ -4,10 +4,12 @@ import { useState } from 'react';
 const MatrixDisplay = (props) => {
     const [selectedX, setSelectedX] = useState(0);
     const [selectedY, setSelectedY] = useState(0);
+    
     const select = (x, y) => {
         setSelectedX(x);
         setSelectedY(y);
     }
+
     const zoom = (e) => {
         const updated = parseInt(e.target.value)
     
@@ -19,7 +21,6 @@ const MatrixDisplay = (props) => {
         }
 
         props.setBoxSize(updated);
-        
     }
 
     const toHex = (str) => {
@@ -27,7 +28,7 @@ const MatrixDisplay = (props) => {
         return hex.length === 1 ? "0" + hex : hex;
     }
     const rgbToHex = (str)  => {
-        const rgb = str.replace(/[^\d,]/g, '').split(',');
+        const rgb = str.replace(/[^\d,]/g, '').split(','); //remove non digits and split
         return "#" + toHex(rgb[0]) + toHex(rgb[1]) + toHex(rgb[2]);
     }
 
@@ -63,14 +64,11 @@ const MatrixDisplay = (props) => {
         </tr>
     )
 
-    console.log(matrix)
 
-        
+
     const rgb = matrix[selectedX].props.children[selectedY].props.color
     const hex = rgbToHex(rgb);
     const textColor = darkOrWhiteText(hex)
-
-
 
     return (
         <div className = "w-full h-full mx-auto p-4">
@@ -84,8 +82,8 @@ const MatrixDisplay = (props) => {
                 <input type="range" min="1" max="32" step = "1" className = "accent-slate-600" value={props.boxSize} onChange = {zoom}/>
             </div>
             <div className = "text-center text-white p-3">
-                <input value = {rgb} className = "inline-block p-2 border border-black text-center w-5/12 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
-                <input value = {hex} className = "inline-block p-2 border border-black text-center w-5/12 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
+                <input value = {rgb} className = "inline-block p-2 border border-black text-center w-2/5 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
+                <input value = {hex} className = "inline-block p-2 border border-black text-center w-2/5 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
             </div>
 
             

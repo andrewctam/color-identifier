@@ -22,7 +22,19 @@ const ColorIdentifier = (props) => {
     const ctxRef = useRef(null);
     const canvasRef = useRef(null);
 
-    
+    useEffect(() => {
+        //reset when a new image is uploaded
+        setCanvasStartX(0);
+        setCanvasStartY(0);
+
+        setCanvasMouseX(0);
+        setCanvasMouseY(0);
+
+        setExtraX(0);
+        setExtraY(0);
+    }, [props.image]);
+
+
     const cropNecessary = canvasRef.current && props.image && 
     (props.image.width > canvasRef.current.offsetWidth || props.image.height > canvasRef.current.offsetHeight);
         

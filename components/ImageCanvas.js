@@ -7,6 +7,7 @@ const ImageCanvas = (props) => {
     const [defaultLeft, setDefaultLeft] = useState("193px");
     useEffect(() => {
         drawCanvas();
+        
         //eslint-disable-next-line
     }, [props.image, props.canvasStartX, props.canvasStartY, props.extraX, props.extraY]);
 
@@ -17,15 +18,19 @@ const ImageCanvas = (props) => {
 
         if (props.image) {
             canvas.width = Math.min(props.image.width, props.imageBoxRef.current.offsetWidth);
-            canvas.height = Math.min(props.image.height, props.imageBoxRef.current.offsetHeight);
+            canvas.height = Math.min(props.image.height, props.imageBoxRef.current.offsetHeight); 
 
-            ctx.drawImage(props.image, props.canvasStartX, props.canvasStartY, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height); 
+            //draw cropped image (or full image if smaller than canvas)
+            ctx.drawImage(props.image, props.canvasStartX, props.canvasStartY, 
+                    canvas.width, canvas.height, 0, 0, canvas.width, canvas.height); 
 
-            placeBox(new Event('mousedown'),
+            //draw selection box at middle, with offset when extrema crop selected
+            placeBox(null,
                     canvas.width / 2 - props.boxSize / 2 + props.extraX,
                     canvas.height / 2 - props.boxSize / 2 + props.extraY);            
     
         } else {
+            //default blank canvas when no image
             canvas.width = props.imageBoxRef.current.offsetWidth;
             canvas.height = props.imageBoxRef.current.offsetHeight;
 
@@ -37,7 +42,8 @@ const ImageCanvas = (props) => {
    
 
     const placeBox = (e, xPos = null, yPos = null) => {
-        e.stopPropagation();
+        if (e)
+            e.stopPropagation();
 
         const sideLength = props.boxSize / 2;
 
@@ -80,15 +86,23 @@ const ImageCanvas = (props) => {
             return;
         }
         
-        if (e.keyCode === 40) {
-            props.setCanvasMouseY(props.canvasMouseY + 1);
-        } else if (e.keyCode === 38) {
-            props.setCanvasMouseY(props.canvasMouseY - 1);
-        } else if (e.keyCode === 37) {
-            props.setCanvasMouseX(props.canvasMouseX - 1);
-        } else if (e.keyCode === 39) {
-            props.setCanvasMouseX(props.canvasMouseX + 1);
+        switch(e.keyCode){
+            case 40: //up
+                props.setCanvasMouseY(props.canvasMouseY + 1);
+                return;
+            case 38: //down
+                props.setCanvasMouseY(props.canvasMouseY - 1);
+                return;
+            case 37: //left
+                props.setCanvasMouseX(props.canvasMouseX - 1);
+                return;
+            case 39: //right
+                props.setCanvasMouseX(props.canvasMouseX + 1);
+                return;
+                
+            default: return;
         }
+
     }
     
     

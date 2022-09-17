@@ -5,7 +5,6 @@ import ColorIdentifier from './ColorIdentifier';
 const App = (props) => {
     const [image, setImage] = useState(null);
     const [imageURL, setImageURL] = useState("");
-  
 
     useEffect (() => {
         document.querySelector("body").classList.add("bg-stone-300");
@@ -40,34 +39,33 @@ const App = (props) => {
 
     const uploadImage = (e) => {
         try {
-        const file = e.target.files[0];
-        if (!file['type'].includes("image")) {
-            alert("Invalid file type. Please upload an image");
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImageURL(reader.result);
-
-            const img = new Image();
-            img.src = reader.result;
-            img.onload = () => {
-                setImage(img);
+            const file = e.target.files[0];
+            if (!file['type'].includes("image")) {
+                alert("Invalid file type. Please upload an image");
+                return;
             }
 
-        };
-        reader.readAsDataURL(file);
-    } catch (error) {
-        alert("Error uploading image. Please try again.");
-    }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageURL(reader.result);
 
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = () => {
+                    setImage(img);
+                }
+
+            };
+            reader.readAsDataURL(file);
+        } catch (error) {
+            alert("Error uploading image. Please try again.");
+        }
 
     }
 
     return  (
     <div className="text-black mx-auto text-center w-full select-none">
-        <div className = "w-full bg-stone-600 p-10 ">
+        <div className = "w-full bg-slate-700 p-10 ">
             <a href = ".">
                 <h1 className="text-6xl text-slate-300 font-semibold inline-block">Image Color Identifier</h1>
             </a>
