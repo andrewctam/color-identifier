@@ -39,9 +39,8 @@ const MatrixDisplay = (props) => {
     }
 
     return (
-        <div className = "bg-zinc-400 rounded-r-xl w-full h-full mx-auto lg:mt-0 m-2 p-2">
-            <p className = "text-center text-xl text-black my-3">Click on a pixel below to select a color</p>
-            <table className='mx-auto' >
+        <div className = "w-full h-full mx-auto p-4 cursor-crosshair">
+            <table className='mx-auto'>
                 <tbody>
                 {props.selection ? 
                     props.selection.map((row, i) => 
@@ -61,7 +60,9 @@ const MatrixDisplay = (props) => {
                 </tbody>
             </table>
 
-            <div className = "text-center text-white my-3 p-3">
+            <p>Click on a pixel to select the color</p>
+
+            <div className = "text-center text-white p-3">
                 <input value = {rgb} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": props.selection[selectedX][selectedY], color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
                 <input value = {hex} className = "inline-block p-2 border border-black text-center w-1/3 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": props.selection[selectedX][selectedY], color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
             </div>

@@ -14,36 +14,38 @@ const ImageCanvas = (props) => {
         props.ctxRef.current = ctx;
 
         if (props.image) {
-            canvas.width = Math.min(props.image.width, props.imageBoxRef.current.offsetWidth - 16);
-            canvas.height = Math.min(props.image.height, props.imageBoxRef.current.offsetHeight - 16);
+            canvas.width = Math.min(props.image.width, props.imageBoxRef.current.offsetWidth);
+            canvas.height = Math.min(props.image.height, props.imageBoxRef.current.offsetHeight);
 
             ctx.drawImage(props.image, props.canvasStartX, props.canvasStartY, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height); 
 
-            placeBox(new Event('mousedown'), canvas.width / 2 - boxSize / 2, canvas.height / 2 - boxSize / 2 );            
+            placeBox(new Event('mousedown'), canvas.width / 2 - boxSize / 2 + props.extraX, canvas.height / 2 - boxSize / 2 + props.extraY);            
     
         } else {
-            canvas.width = props.imageBoxRef.current.offsetWidth - 16;
-            canvas.height = props.imageBoxRef.current.offsetHeight - 16;
+            canvas.width = props.imageBoxRef.current.offsetWidth;
+            canvas.height = props.imageBoxRef.current.offsetHeight;
 
-            ctx.fillStyle = "rgb(155,186,218)";
+            ctx.fillStyle = "rgb(120, 114, 108)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
     }
 
     useEffect(() => {
         drawCanvas();
-    }, [props.image, props.canvasStartX, props.canvasStartY]);
+        //eslint-disable-next-line
+    }, [props.image, props.canvasStartX, props.canvasStartY, props.extraX, props.extraY]);
     
     useEffect(() => {
-        window.addEventListener('resize', drawCanvas);
+        //window.addEventListener('resize', drawCanvas);
         placeBox(new Event('mousedown'), 0, 0);
+        //eslint-disable-next-line
     }, [])
 
     const placeBox = (e, xPos = null, yPos = null) => {
         const sideLength = boxSize / 2;
 
-        const maxWidth = props.canvasRef.current.offsetWidth - sideLength * 2;
-        const maxHeight = props.canvasRef.current.offsetHeight - sideLength * 2;
+        const maxWidth = props.canvasRef.current.offsetWidth - sideLength * 2 - 2;
+        const maxHeight = props.canvasRef.current.offsetHeight - sideLength * 2 - 2;
 
         if (xPos === null)
             xPos = e.nativeEvent.offsetX - sideLength;
@@ -77,14 +79,14 @@ const ImageCanvas = (props) => {
     }
 
     return (
-        <div ref={props.imageBoxRef} className="m-auto w-96 h-96">
-            <div className="relative mx-auto cursor-crosshair w-full h-full "
+        <div ref={props.imageBoxRef} className="w-96 h-96">
+            <div className="relative cursor-crosshair w-fit h-fit"
                 draggable={false}
                 onMouseMove={(e) => { if (mouseDown) placeBox(e); }}
                 onMouseDown={(e) => { placeBox(e); setMouseDown(true) }}
                 onMouseUp={() => { setMouseDown(false) }}>
 
-                <canvas ref={props.canvasRef} />
+                <canvas ref={props.canvasRef} className = "m-auto border border-black"/>
 
                 <SelectionBox x={x} y={y} width={boxSize} height={boxSize} />
             </div>

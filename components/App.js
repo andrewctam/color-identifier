@@ -5,9 +5,10 @@ import ColorIdentifier from './ColorIdentifier';
 const App = (props) => {
     const [image, setImage] = useState(null);
     const [imageURL, setImageURL] = useState("");
+  
 
     useEffect (() => {
-        document.querySelector("body").classList.add("bg-stone-300");
+        document.querySelector("body").classList.add("bg-stone-400");
 
 
         document.addEventListener('paste', (e) => {
@@ -50,14 +51,20 @@ const App = (props) => {
     }
 
     return  (
-    <div className="text-black mx-auto text-center w-fit py-10 px-1 select-none">
-        <a href = "."><h1 className="text-5xl">Image Color Identifier</h1></a>
+    <div className="text-black mx-auto text-center w-full select-none">
+        <div className = "w-full bg-stone-500 p-10 ">
+            <a href = ".">
+                <h1 className="text-6xl text-slate-300 font-semibold inline-block">Image&nbsp;</h1>
+                <h1 className="text-6xl text-slate-200 font-semibold inline-block">Color&nbsp;</h1>
+                <h1 className="text-6xl text-zinc-200 font-semibold inline-block"> Identifier&nbsp;</h1>
+            </a>
 
-        <p className="text-lg text-gray-700 mt-8">Paste an image, or upload one below</p>
-        <div className="w-fit bg-stone-400 mx-auto p-3 mb-8 rounded-xl" >
-            <input type='file' onInput={uploadImage} />
+            <p className="text-lg text-white mt-8">Paste an image or upload one below</p>
+            <div className="bg-stone-400 max-w-fit mx-auto p-3 mb-8 rounded-xl" >
+                <input type='file' onInput={uploadImage} />
+            </div>
         </div>
-    
+
         <ColorIdentifier imageURL = {imageURL} image = {image} />
     </div>)
 }

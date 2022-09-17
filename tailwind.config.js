@@ -7,7 +7,11 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
-        "h-3/4-screen": "75vh",
+        "": "75vh",
+      },
+      
+      maxWidth: {
+        "1/2": "50%",
       }
     }, 
   },

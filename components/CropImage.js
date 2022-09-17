@@ -8,12 +8,15 @@ const CropImage = (props) => {
 
     const [scale, setScale] = useState(1);
     const imgRef = useRef(null);
-
+    const cropBackgroundRef = useRef(null)
     useEffect(() => {
         if (props.image.width > imgRef.current.width) {
             setScale(props.image.width / imgRef.current.width);
         } 
-    }, [])
+        
+        cropBackgroundRef.current.scrollIntoView()
+    //eslint-disable-next-line
+    }, [props.image])
 
     const placeBox = (e, xPos = null, yPos = null) => {
         if (props.image.width > imgRef.current.width) {
@@ -32,37 +35,53 @@ const CropImage = (props) => {
             yPos = e.nativeEvent.offsetY - props.canvasHeight / scale / 2;
 
 
-        xPos = Math.max(0, xPos)
-        xPos = Math.min(maxWidth, xPos)
+        if (xPos > maxWidth) {
+            var extraX =  xPos - maxWidth;
+            xPos = maxWidth
+        } else if (xPos < 0) {
+            extraX = xPos;
+            xPos = 0;
+        } else {
+            extraX = 0;
+        }
 
-        yPos = Math.max(0, yPos)
-        yPos = Math.min(maxHeight, yPos)
-        
 
-        console.log(xPos + " " + yPos);
+        if (yPos > maxHeight) {
+            var extraY =  yPos - maxHeight;
+            yPos = maxHeight
+        } else if (yPos < 0) {
+            extraY = yPos;
+            yPos = 0;
+        } else {
+            extraY = 0;
+        }
+
 
         setX(xPos);
         props.setCanvasStartX(xPos * scale);
+        props.setExtraX(extraX * scale);
         
         setY(yPos);
         props.setCanvasStartY(yPos * scale);
+        props.setExtraY(extraY * scale);
         
         
         e.stopPropagation();
     }
 
     return (
-        <div className="mx-auto mt-5">
-            <div className="relative mx-auto cursor-crosshair w-fit h-fit"
+        <div ref = {cropBackgroundRef} className="mx-auto py-8 w-full bg-stone-600">
+            <div className="relative mx-auto cursor-crosshair w-fit h-fit lg:max-w-1/2"
                 draggable={false}
                 onMouseMove={(e) => { if (mouseDown) placeBox(e); }}
                 onMouseDown={(e) => { placeBox(e); setMouseDown(true) }}
                 onMouseUp={() => { setMouseDown(false) }}>
-
-                <img ref = {imgRef} src={props.imageURL} draggable = {false}/>
+                
+                <img alt = {"Uploaded Image"} ref = {imgRef} src={props.imageURL} draggable = {false}/>
 
                 <SelectionBox x={x} y={y} width = {props.canvasWidth / scale} height={props.canvasHeight / scale} />
             </div>
+            <p className = "text-white">Click or drag on the image to select an area. Then fine tune your selection below</p>
         </div>
 
     )
