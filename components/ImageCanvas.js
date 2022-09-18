@@ -80,7 +80,7 @@ const ImageCanvas = (props) => {
     
 
     const handleKeyDown = (e) => {
-        if (38 <= e.keyCode && e.keyCode <= 40) {
+        if (37 <= e.keyCode && e.keyCode <= 40) {
             e.preventDefault();
         } else {
             return;
