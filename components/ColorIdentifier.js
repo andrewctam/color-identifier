@@ -1,10 +1,13 @@
-import {useState, useRef, useEffect} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import MatrixDisplay from './MatrixDisplay';
 import ImageCanvas from './ImageCanvas';
 import CropImage from './CropImage';
 
 const ColorIdentifier = (props) => {
     const [boxSize, setBoxSize] = useState(32);
+
+    const [canvasWidth, setCanvasWidth] = useState("386px");
+    const [canvasHeight, setCanvasHeight] = useState("386px");
 
     //where on the image to draw on the canvas
     const [canvasStartX, setCanvasStartX] = useState(0);
@@ -13,7 +16,7 @@ const ColorIdentifier = (props) => {
     //current mouse position on canvas
     const [canvasMouseX, setCanvasMouseX] = useState(0);
     const [canvasMouseY, setCanvasMouseY] = useState(0);
-    
+
     //offset for the canvas selection box when clicking on extrema mouse positions
     const [extraX, setExtraX] = useState(0);
     const [extraY, setExtraY] = useState(0);
@@ -35,69 +38,73 @@ const ColorIdentifier = (props) => {
     }, [props.image]);
 
 
-    const cropNecessary = canvasRef.current && props.image && 
-    (props.image.width > canvasRef.current.offsetWidth || props.image.height > canvasRef.current.offsetHeight);
-        
+    return (
+        <div className="" >
+            {props.image && (props.image.width > canvasWidth || props.image.height > canvasHeight) ?
+                <CropImage
+                    image={props.image}
+                    imageURL={props.imageURL}
 
-    return ( 
-    <div className = "" >
-        {cropNecessary ? 
-        <CropImage image = {props.image} imageURL = {props.imageURL}
-            canvasWidth = {canvasRef.current.offsetWidth - 2} 
-            canvasHeight = {canvasRef.current.offsetHeight - 2}
-            
-            setCanvasStartX = {setCanvasStartX}
-            setCanvasStartY = {setCanvasStartY}
+                    canvasWidth={canvasWidth - 2}
+                    canvasHeight={canvasHeight - 2}
 
-            setExtraX = {setExtraX}
-            setExtraY = {setExtraY}
-         /> : null}
+                    setCanvasStartX={setCanvasStartX}
+                    setCanvasStartY={setCanvasStartY}
 
+                    setExtraX={setExtraX}
+                    setExtraY={setExtraY}
+                /> :  null}
 
-        <div className = "lg:grid lg:grid-cols-2 lg:gap-2">
-            <div className = "mx-auto lg:my-auto w-fit h-fit rounded-xl mt-8 mb-6 relative">
-                <ImageCanvas 
-                    image = {props.image}
-                    imageBoxRef = {imageBoxRef}
-                    ctxRef = {ctxRef}
-                    canvasRef = {canvasRef}
+            <div className="lg:grid lg:grid-cols-2 lg:gap-2">
+                <div className="mx-auto lg:my-auto w-fit h-fit rounded-xl mt-8 mb-6 relative">
+                    <ImageCanvas
+                        boxSize={boxSize}
+                        image={props.image}
 
-                    canvasStartX = {canvasStartX}
-                    canvasStartY = {canvasStartY}
+                        imageBoxRef={imageBoxRef}
+                        ctxRef={ctxRef}
+                        canvasRef={canvasRef}
 
-                    setCanvasMouseX = {setCanvasMouseX}
-                    setCanvasMouseY = {setCanvasMouseY}
-                    
-                    canvasMouseX = {canvasMouseX}
-                    canvasMouseY = {canvasMouseY}
+                        canvasWidth={canvasWidth}
+                        canvasHeight={canvasHeight}
 
-                    extraX = {extraX}
-                    extraY = {extraY}
+                        setCanvasWidth={setCanvasWidth}
+                        setCanvasHeight={setCanvasHeight}
 
-                    boxSize = {boxSize}
+                        canvasMouseX={canvasMouseX}
+                        canvasMouseY={canvasMouseY}
+
+                        setCanvasMouseX={setCanvasMouseX}
+                        setCanvasMouseY={setCanvasMouseY}
+
+                        canvasStartX={canvasStartX}
+                        canvasStartY={canvasStartY}
+
+                        extraX={extraX}
+                        extraY={extraY}
+                    />
+
+                    <div className="hidden lg:block lg:absolute lg:-top-6 lg:-left-6 -z-10 bg-stone-600" style={{
+                        width: canvasWidth,
+                        height: canvasHeight
+                    }} />
+                </div>
+
+                <MatrixDisplay
+                    boxSize={boxSize}
+                    setBoxSize={setBoxSize}
+                    ctxRef={props.image ? ctxRef : null}
+                    canvasMouseX={canvasMouseX}
+                    canvasMouseY={canvasMouseY}
+                    setCanvasMouseX={setCanvasMouseX}
+                    setCanvasMouseY={setCanvasMouseY}
                 />
-
-                <div className = "hidden lg:block lg:absolute lg:-top-6 lg:-left-6 -z-10 bg-stone-600" style = {{
-                    width: canvasRef.current ? canvasRef.current.offsetWidth : "386px",
-                    height: canvasRef.current ? canvasRef.current.offsetHeight : "386px"
-                }} />
             </div>
 
-            <MatrixDisplay 
-                boxSize = {boxSize} 
-                setBoxSize = {setBoxSize} 
-                ctxRef = {props.image ? ctxRef : null} 
-                canvasMouseX={canvasMouseX} 
-                canvasMouseY = {canvasMouseY}
-                setCanvasMouseX = {setCanvasMouseX}
-                setCanvasMouseY = {setCanvasMouseY}
-            />
+
+
         </div>
 
-
-       
-    </div>
-    
     )
 }
 
