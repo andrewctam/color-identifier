@@ -3,7 +3,7 @@ import SelectionBox from './SelectionBox';
 
 const ImageCanvas = (props) => {
     const [mouseDown, setMouseDown] = useState(false);
-    //most state is moved to ColorIdentifier since it needs to be accessed in the MatrixDisplay
+    //most state is moved to ColorIdentifier since it needs to be accessed in the MatrixDisplay and CropImage
 
     useEffect(() => {
         drawCanvas();
@@ -52,8 +52,8 @@ const ImageCanvas = (props) => {
 
         const sideLength = props.boxSize / 2;
 
-        const maxWidth = props.canvasWidth - sideLength * 2 - 2; // -2 for border
-        const maxHeight = props.canvasHeight - sideLength * 2 - 2;
+        const maxWidth = props.canvasWidth - sideLength * 2;
+        const maxHeight = props.canvasHeight - sideLength * 2;
 
         if (xPos === null)
             xPos = e.nativeEvent.offsetX - sideLength;

@@ -4,7 +4,7 @@ import { useState } from 'react';
 const MatrixDisplay = (props) => {
     const [selectedX, setSelectedX] = useState(0);
     const [selectedY, setSelectedY] = useState(0);
-    
+
     const select = (x, y) => {
         setSelectedX(x);
         setSelectedY(y);
@@ -12,7 +12,7 @@ const MatrixDisplay = (props) => {
 
     const zoom = (e) => {
         const updated = parseInt(e.target.value)
-    
+
         if (selectedX >= updated) {
             setSelectedX(updated - 1);
         }
@@ -27,16 +27,16 @@ const MatrixDisplay = (props) => {
         const hex = parseInt(str).toString(16)
         return hex.length === 1 ? "0" + hex : hex;
     }
-    const rgbToHex = (str)  => {
+    const rgbToHex = (str) => {
         const rgb = str.replace(/[^\d,]/g, '').split(','); //remove non digits and split
         return "#" + toHex(rgb[0]) + toHex(rgb[1]) + toHex(rgb[2]);
     }
 
     const darkOrWhiteText = (hex) => { //#123456
         var brightness = Math.round((
-                    (Number("0x" + hex.substring(1, 3)) * 299) +
-                    (Number("0x" + hex.substring(3, 5)) * 587) +
-                    (Number("0x" + hex.substring(5)) * 114)) / 1000);
+            (Number("0x" + hex.substring(1, 3)) * 299) +
+            (Number("0x" + hex.substring(3, 5)) * 587) +
+            (Number("0x" + hex.substring(5)) * 114)) / 1000);
         return (brightness > 125) ? 'black' : 'white';
 
     }
@@ -47,20 +47,20 @@ const MatrixDisplay = (props) => {
         else
             pixel = [120, 114, 108];
 
-        return <Pixel 
-            color = {`rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`} 
-            key = {i + "," + j} 
-            x = {i} 
-            y = {j} 
-            select = {select} 
-            selected = {selectedX === i && selectedY === j}
-            boxSize = {props.boxSize} />
+        return <Pixel
+            color={`rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`}
+            key={i + "," + j}
+            x={i}
+            y={j}
+            select={select}
+            selected={selectedX === i && selectedY === j}
+            boxSize={props.boxSize} />
     }
 
 
-    const matrix = new Array(props.boxSize).fill().map( (row, i) =>
-        <tr key = {"row" + i}> 
-            { new Array(props.boxSize).fill().map( (col, j) =>  getPixel(i, j) ) }
+    const matrix = new Array(props.boxSize).fill().map((row, i) =>
+        <tr key={"row" + i}>
+            {new Array(props.boxSize).fill().map((col, j) => getPixel(i, j))}
         </tr>
     )
 
@@ -71,22 +71,33 @@ const MatrixDisplay = (props) => {
     const textColor = darkOrWhiteText(hex)
 
     return (
-        <div className = "w-full h-full mx-auto p-4">
-            <table className='mx-auto cursor-crosshair'>        
+        <div className="w-full h-full mx-auto p-4">
+            <table className='mx-auto cursor-crosshair'>
                 <tbody> {matrix} </tbody>
             </table>
 
             <p>Click on a pixel to select a color</p>
             <div>
                 <p> {props.boxSize + " x " + props.boxSize} </p>
-                <input type="range" min="1" max="32" step = "1" className = "accent-slate-600" value={props.boxSize} onChange = {zoom}/>
+                <input type="range" min="1" max="32" step="1" className="accent-slate-600" value={props.boxSize} onChange={zoom} />
             </div>
-            <div className = "text-center text-white p-3">
-                <input value = {rgb} className = "inline-block p-2 border border-black text-center w-2/5 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
-                <input value = {hex} className = "inline-block p-2 border border-black text-center w-2/5 rounded-xl mx-3 bg-stone-300" style = {{"backgroundColor": rgb, color: textColor}} onClick = {(e) => {e.target.select()}} readOnly = {true} />
+            <div className="p-3">
+                <input
+                    value={rgb} 
+                    className="inline-block p-2 border border-black text-center w-2/5 rounded-xl mr-3" 
+                    style={{ "backgroundColor": rgb, color: textColor }} 
+                    onClick={(e) => { e.target.select() }} 
+                    readOnly={true} />
+
+                <input 
+                    value={hex} 
+                    className="inline-block p-2 border border-black text-center w-2/5 rounded-xl ml-3" 
+                    style={{ "backgroundColor": rgb, color: textColor }} 
+                    onClick={(e) => { e.target.select() }} 
+                    readOnly={true} />
             </div>
 
-            
+
         </div>
     )
 }

@@ -45,8 +45,8 @@ const ColorIdentifier = (props) => {
                     image={props.image}
                     imageURL={props.imageURL}
 
-                    canvasWidth={canvasWidth - 2}
-                    canvasHeight={canvasHeight - 2}
+                    canvasWidth={canvasWidth}
+                    canvasHeight={canvasHeight}
 
                     setCanvasStartX={setCanvasStartX}
                     setCanvasStartY={setCanvasStartY}
