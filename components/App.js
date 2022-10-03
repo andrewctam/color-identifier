@@ -65,7 +65,7 @@ const App = (props) => {
 
     return  (
     <div className="text-black mx-auto text-center w-full select-none">
-        <div className = "w-full bg-slate-700 p-10 ">
+        <div className = "w-full bg-zinc-700 p-10 ">
             <a href = ".">
                 <h1 className="text-6xl text-slate-300 font-semibold inline-block">Image Color Identifier</h1>
             </a>

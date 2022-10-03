@@ -87,10 +87,10 @@ const ImageCanvas = (props) => {
                 placeBox(null, props.canvasMouseX, props.canvasMouseY - 1);
             return;
             case 37: //left
-                placeBox(null, props.canvasMouseX + 1, props.canvasMouseY);
+                placeBox(null, props.canvasMouseX - 1, props.canvasMouseY);
             return;
             case 39: //right
-                placeBox(null, props.canvasMouseX - 1, props.canvasMouseY);
+                placeBox(null, props.canvasMouseX + 1, props.canvasMouseY);
                 return;
                 
             default: return;
