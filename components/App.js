@@ -4,10 +4,21 @@ import ColorIdentifier from './ColorIdentifier';
 
 const App = (props) => {
     const [image, setImage] = useState(null);
-    const [imageURL, setImageURL] = useState("");
+    const [imageURL, setImageURL] = useState(props.defaultUrl);
+
 
     useEffect (() => {
         document.querySelector("body").classList.add("bg-stone-300");
+
+        const defaultImage = new Image();
+        defaultImage.src = props.defaultUrl;
+        defaultImage.setAttribute('crossOrigin', '');
+
+        defaultImage.onload = () =>{
+            setImage(defaultImage) 
+        }
+
+
 
         document.addEventListener('paste', (e) => {
             try {
